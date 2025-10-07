@@ -63,15 +63,20 @@ public class PlayerMovement : MonoBehaviour
         float speed = move.magnitude;
 
         // Руки -2 < Y < 2, -6,5 < X < -5,5 вращение
-        
+        Vector3 handsSwayY = new Vector3(0, 0, 0);
         Vector3 currentRotation = Hands.transform.localEulerAngles;
         if (speed > 0.1f)
         {
             timer += Time.deltaTime;
 
-            
+            // влево-вправо
 
             currentRotation.y = Mathf.Sin(timer * weaponStepForSwaySpeed) * 2f;
+
+            handsSwayY = Hands.localPosition;
+            handsSwayY.y = -2.6f + Mathf.Sin(timer * weaponStepForSwaySpeed) * 0.05f;
+
+            Hands.localPosition = handsSwayY;
 
             Hands.transform.localEulerAngles = currentRotation;
 
@@ -97,15 +102,48 @@ public class PlayerMovement : MonoBehaviour
 
                 if (angleY < -0.1f)
                 {
-                    Debug.Log("detected negative sway!");
+                    
                     currentRotation.y += weaponReturnToAimpointSpeed;
                     Hands.transform.localEulerAngles = currentRotation;
                 }
 
                 
             }
-            timer = 0f;
+
+            handsSwayY.y = Hands.localPosition.y;
+
+            if (Hands.localPosition.y != -2.6f)
+            {
+                if (Hands.localPosition.y > -2.61f && Hands.localPosition.y < -2.59f) // - 2,7  -2,6  -2,5
+                {
+                    Debug.Log("1");
+                    Debug.Log(Hands.localPosition.y);
+                    handsSwayY = Hands.localPosition;
+                    handsSwayY.y = -2.6f;
+                    Hands.localPosition = handsSwayY;
+                }
+                if (Hands.localPosition.y > -2.6f)
+                {
+                    Debug.Log("2");
+                    Debug.Log(Hands.localPosition.y);
+                    handsSwayY = new Vector3(0, 0.01f, 0);
+                    Hands.localPosition -= handsSwayY;
+                }
+                if (Hands.localPosition.y < -2.6f)
+                {
+                    Debug.Log("3");
+                    handsSwayY = new Vector3(0, 0.01f, 0);
+                    Hands.localPosition += handsSwayY;
+                }
+            }
+            
+                
+            
+            
+        timer = 0f;
         }
+            
+        
        
 
 
