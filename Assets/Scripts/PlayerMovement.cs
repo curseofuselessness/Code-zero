@@ -30,14 +30,6 @@ public class PlayerMovement : MonoBehaviour
     {
         //animator.applyRootMotion = false;
 
-        if (Hands != null)
-        {
-            Debug.Log("ok");
-        }
-        if (Hands == null)
-        {
-            Debug.Log("not ok");
-        }
     }
 
     void Update()
@@ -84,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
 
-            float angleY = Hands.localEulerAngles.y > 180f ? Hands.localEulerAngles.y - 360f : Hands.localEulerAngles.y;
+            float angleY = Utils.NormalizeAngle(Hands.localEulerAngles.y);
 
 
             if (Hands.localEulerAngles.y != 0f)
@@ -116,22 +108,20 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (Hands.localPosition.y > -2.61f && Hands.localPosition.y < -2.59f) // - 2,7  -2,6  -2,5
                 {
-                    Debug.Log("1");
-                    Debug.Log(Hands.localPosition.y);
+                    
                     handsSwayY = Hands.localPosition;
                     handsSwayY.y = -2.6f;
                     Hands.localPosition = handsSwayY;
                 }
                 if (Hands.localPosition.y > -2.6f)
                 {
-                    Debug.Log("2");
-                    Debug.Log(Hands.localPosition.y);
+                    
                     handsSwayY = new Vector3(0, 0.01f, 0);
                     Hands.localPosition -= handsSwayY;
                 }
                 if (Hands.localPosition.y < -2.6f)
                 {
-                    Debug.Log("3");
+                    
                     handsSwayY = new Vector3(0, 0.01f, 0);
                     Hands.localPosition += handsSwayY;
                 }
